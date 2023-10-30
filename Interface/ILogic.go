@@ -4,7 +4,7 @@ package Interface
 type ILogic interface {
 	Init()
 	Input()
-	Update()
+	Update(input *IMouseInput)
 	Render()
 	Cleanup()
 }

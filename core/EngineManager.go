@@ -14,8 +14,9 @@ type EngineManager struct {
 	fps       int
 	isRunning bool
 
-	window *WindowManager
-	game   *game.Game
+	window     *WindowManager
+	game       *game.Game
+	mouseInput *MouseInput
 }
 
 func (engine *EngineManager) Fps() int {
@@ -27,7 +28,7 @@ func (engine *EngineManager) SetFps(fps int) {
 }
 
 func NewEngineManager(window *WindowManager, game *game.Game) EngineManager {
-	return EngineManager{window: window, game: game}
+	return EngineManager{window: window, game: game, mouseInput: NewMouseInput()}
 }
 
 func (engine *EngineManager) Start() {
@@ -41,6 +42,7 @@ func (engine *EngineManager) Start() {
 func (engine *EngineManager) Init() {
 	engine.window.Init()
 	engine.game.Init()
+	engine.mouseInput.Init()
 }
 
 func (engine *EngineManager) run() {
@@ -59,7 +61,7 @@ func (engine *EngineManager) run() {
 		unprocessedTime += float64(passedTime) / utils.NANOSECOND
 		frameCounter += passedTime
 
-		input()
+		engine.input()
 
 		for unprocessedTime > frameTime {
 			isRender = true
@@ -84,9 +86,9 @@ func (engine *EngineManager) run() {
 	engine.cleanup()
 }
 
-func (engine *EngineManager) cleanup() {
-	engine.window.Cleanup()
-	glfw.Terminate()
+func (engine *EngineManager) input() {
+	engine.mouseInput.Input()
+	engine.game.Input()
 }
 
 func (engine *EngineManager) render() {
@@ -95,6 +97,7 @@ func (engine *EngineManager) render() {
 }
 
 func (engine *EngineManager) update() {
+	engine.game.Update(engine.mouseInput)
 }
 
 func (engine *EngineManager) stop() {
@@ -104,6 +107,8 @@ func (engine *EngineManager) stop() {
 	engine.isRunning = false
 }
 
-func input() {
-
+func (engine *EngineManager) cleanup() {
+	engine.window.Cleanup()
+	engine.game.Cleanup()
+	glfw.Terminate()
 }

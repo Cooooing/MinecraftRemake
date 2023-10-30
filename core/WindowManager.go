@@ -7,6 +7,8 @@ import (
 	"log"
 )
 
+var Window = &WindowManager{}
+
 type WindowManager struct {
 	window *glfw.Window
 	vSync  bool // 垂直同步
@@ -17,7 +19,8 @@ type WindowManager struct {
 }
 
 func NewWindowManager(title string, width int, height int, vSync bool) *WindowManager {
-	return &WindowManager{vSync: vSync, Title: title, Width: width, Height: height}
+	Window = &WindowManager{vSync: vSync, Title: title, Width: width, Height: height}
+	return Window
 }
 
 func (w *WindowManager) SetTitle(Title string) {

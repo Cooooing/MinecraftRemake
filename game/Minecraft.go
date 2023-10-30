@@ -21,20 +21,19 @@ func (g Game) Init() {
 
 func (g Game) Input() {
 	//TODO implement me
-	panic("implement me")
 }
 
-func (g Game) Update() {
+func (g Game) Update(mouseInput Interface.IMouseInput) {
 	//TODO implement me
-	panic("implement me")
+	fmt.Printf("x: %f y: %f\n", mouseInput.DisplVec().X(), mouseInput.DisplVec().Y())
 }
 
 func (g Game) Render() {
 	//TODO implement me
-	panic("implement me")
+	fmt.Println("game Render ...")
 }
 
 func (g Game) Cleanup() {
 	//TODO implement me
-	panic("implement me")
+	fmt.Println("game Cleanup ...")
 }
